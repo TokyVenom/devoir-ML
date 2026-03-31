@@ -1,0 +1,29 @@
+Rapport structuré du projet IA Morpion :
+   www.ispm-edu.com
+   nom du groupe : CyberVisor
+   membres du groupe :
+   _RANDRIAMAMONJISOA Tokindrainy N°17 IGGLIA4
+   _RANDY Hajaniaina Cédric N°39 IGGLIA4
+   _RANDRIANANTOANDRO Radoniaina Francky N°27 IGGLIA4
+   _ANDRIATIANA Antsa Eliot N°31 IGGLIA4
+
+   description du projet :
+   Un IA Morpion : application Python/Streamlit qui combine des modèles ML (XGBoost pour prédire la victoire de X et MLP po ur estimer le match nul) et un moteur Minimax pour jouer au Tic‑Tac‑Toe. L’interface permet de jouer en Humain vs IA, IA vs IA ou Humain vs Humain (PvP), d’ajuster le poids du draw (alpha) et la profondeur Minimax, et d’afficher les probabilités estimées P(X_wins),P(draw),P(O_wins). Le projet inclut des scripts de simulation pour évaluer les performances, un stub Minimax pour tests rapides, et des outils d’analyse (extraction de coefficients, métriques AUC/F1) pour comprendre et améliorer les modèles.
+
+    Structure du repository :
+    IAMorpion
+        generator
+        interfaces
+        models
+        notebook
+        ressources
+        main.py
+        README
+
+    Résultats ML : IAMorpion\data\test_positions.csv
+
+    Réponses aux questions :
+    Q1 :  Les coefficients les plus influents correspondent généralement à la case centrale (index 4) et aux coins (0, 2, 6, 8), et ce pour les deux occupations (X et O). Pour le modèle x_wins, les features indiquant X sur ces cases ont souvent des coefficients positifs élevés (augmentent P(X_wins)), tandis que les features O sur les mêmes cases ont des coefficients de signe opposé (diminuent P(X_wins)). La case centrale est particulièrement influente car elle participe à plus de lignes gagnantes; cela concorde avec la stratégie humaine qui valorise centre et coins pour créer des menaces multiples.
+    Q2 : Le dataset montre typiquement un déséquilibre (plus de positions non‑gagnantes que gagnantes pour X ; la proportion de draws dépend de la génération des positions). En conséquence, l’accuracy n’est pas la métrique la plus fiable. On privilégie plutôt AUC pour l’évaluation globale et F1 / Precision‑Recall (Average Precision) si la classe positive est rare et qu’on veut équilibrer précision et rappel. Pour détecter toutes les positions gagnantes, on peut mettre l’accent sur le rappel ou le F1.
+    Q3 : En pratique, x_wins (souvent XGBoo Le mode Hybride combine recherche (Minimax) et évaluation ML. Il corrige souvent les erreurs tactiques du ML pur (évite mieux les pièges et les pertes forcées) tout en conservant des choix plus « humains » guidés par le modèle. En pratique, l’hybride réduit les faux négatifs tactiques du ML pur mais augmente la latence par coup ; le comportement final dépend du poids alpha et de la profondeur Minimax.st) tend à obtenir de meilleurs scores qu’is_draw (MLP), car la victoire de X est souvent corrélée à motifs locaux (deux en ligne, contrôle du centre) plus faciles à apprendre. is_draw est plus difficile car le nul dépend d’un équilibre global et de séquences mutuelles. Les erreurs fréquentes surviennent sur positions tactiques (séquences à plusieurs coups, forks/double menaces) et sur positions rares ou proches de la fin où les exemples d’entraînement sont peu nombreux.
+    Q4 :  Le mode Hybride combine recherche (Minimax) et évaluation ML. Il corrige souvent les erreurs tactiques du ML pur (évite mieux les pièges et les pertes forcées) tout en conservant des choix plus « humains » guidés par le modèle. En pratique, l’hybride réduit les faux négatifs tactiques du ML pur mais augmente la latence par coup ; le comportement final dépend du poids alpha et de la profondeur Minimax.
